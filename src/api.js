@@ -3,6 +3,20 @@ import { round } from 'mathjs';
 import { getCoinGeckoName, getNetworkTimeMinimum } from './networks.js';
 import { sleep, transformDDMMYYYtoUnix } from './utils.js';
 
+import { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url'; 
+import { dirname } from 'path';
+  
+// Resolve directory name 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename); 
+  
+// Load configuration  
+const configPath = path.resolve(__dirname, '../config/userInput.json'); 
+const config = JSON.parse(await fs.readFile(configPath, 'utf8')); 
+const coingeckoApiKey = config.coingecko_apikey;
+
 export async function addPriceData(obj){
     let priceObject = await _getPriceObject(obj);
     var prices;
